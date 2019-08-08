@@ -37,10 +37,19 @@ def fetch_data():
     for x in store_keys:
         store = store_list[x]
         output = []
-        storeHours = "Mon - Sat : 10.a.m - 8.p.m, Sun : 11.a.m - 7.p.m"
-
+        store_hours = ""
         if store.get('storeHoursHTML') == "":
-            storeHours = "<MISSING>"
+            store_hours = "<MISSING>"
+        else:
+            storeHours = etree.HTML(store.get('storeHoursHTML')).xpath(".//text()")
+            while True:
+                if '\n' in storeHours:
+                    storeHours.remove('\n')
+                else:
+                    break
+            for x in xrange(0,len(storeHours)/2):
+                store_hours += storeHours[x] + " " + storeHours[x+len(storeHours)/2] + ","
+            store_hours = store_hours[:-1]
         if store.get('phone'):
             phone = store.get('phoneAreaCode') + ' ' + store.get('phone')
         else:
@@ -58,7 +67,7 @@ def fetch_data():
         output.append(store.get('storeLocatorType'))
         output.append(store.get('latitude'))
         output.append(store.get('longitude'))
-        output.append(storeHours)
+        output.append(store_hours)
         output_list.append(validate(output))
     return output_list
     

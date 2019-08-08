@@ -53,12 +53,7 @@ def fetch_data():
         street_address = (parsed_address.get("AddressNumber") or u'') + u' ' + (parsed_address.get("StreetNamePreDirectional") or u'') + u' ' + (parsed_address.get("StreetName") or u'') + u' ' + (parsed_address.get("StreetNamePostType") or u'')
         if street_address == '   ':
             tmp = address.split(' ')
-            tmp.pop()
-            tmp.pop()
-            tmp.pop()
-            street_address = ''
-            for x in tmp:
-                street_address += ' ' + x
+            street_address = ' '.join(tmp[:-3])
         cityaddress = store.get('address_display').encode('utf-8').split('<br />')[1]
         cityaddress = dict(usaddress.parse(cityaddress))
         cityaddress = {v: k for k, v in cityaddress.items()}
