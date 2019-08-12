@@ -34,7 +34,9 @@ def fetch_data():
     request = requests.get(url, headers=headers)
     response = etree.HTML(request.text.encode("utf-8"))
     store_list = response.xpath('//marker')
+    index = 0
     for store in store_list:
+        index += 1
         output = []
         detailurl = store.xpath('./@web')[0]
         detailrequest = requests.get('https://www.ngpg.org' + detailurl)
@@ -59,7 +61,7 @@ def fetch_data():
         output.append(store.xpath('./@state')[0])
         output.append(zipcode)
         output.append('US')
-        output.append('PHYSICIANS GROUP')
+        output.append(index)
         output.append(phone)
         output.append(store.xpath('./@category')[0])
         output.append(store.xpath('./@lat')[0])

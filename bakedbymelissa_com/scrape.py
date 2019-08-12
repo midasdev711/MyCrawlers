@@ -5,17 +5,18 @@ import requests
 from lxml import etree
 import json
 
-from selenium import webdriver
-
 import usaddress
 
-base_url = 'https://www.bakedbymelissa.com'
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument('--headless')
-chrome_options.add_argument('--no-sandbox')
-chrome_options.add_argument('--disable-dev-shm-usage')
-driver = webdriver.Chrome('chromedriver', chrome_options=chrome_options)
+options = Options() 
+options.add_argument('--headless')
+options.add_argument('--no-sandbox')
+options.add_argument('--disable-dev-shm-usage')
+driver = webdriver.Chrome('chromedriver', options=options)
+
+base_url = 'https://www.bakedbymelissa.com'
 
 def validate(items):
     rets = []
