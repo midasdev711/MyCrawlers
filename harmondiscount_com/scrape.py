@@ -16,7 +16,7 @@ def validate(items):
             item = str(item)
         item = item.encode('utf-8').strip()
         if item != '':
-            rets.append(item)
+            rets.append(str(item))
     return rets
 
 def write_output(data):
@@ -65,6 +65,7 @@ def fetch_data():
         output.append(store.get('geo').get('lat'))
         output.append(store.get('geo').get('lng'))
         output.append(storeHours)
+        pdb.set_trace()
         output_list.append(validate(output))
     return output_list
     

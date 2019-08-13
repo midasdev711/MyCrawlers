@@ -39,6 +39,8 @@ def fetch_data():
         store_hours = ""
         if len(hours) > 0:
             for x in hours:
+                if x.get('isClosed') == True:
+                    continue
                 store_hours += (x.get('day') or u' ') + u' ' + (x.get('open') or u' ') + u' ' + (x.get('close') or u' ') + u','
         if store.get('postalCode').encode('utf-8')[:1] >= 'A' and store.get('postalCode').encode('utf-8')[:1] <= 'Z':
             country_code = 'CA'
@@ -57,6 +59,8 @@ def fetch_data():
         output.append(str(store.get('latitude')))
         output.append(str(store.get('longitude')))
         output.append(store_hours)
+        if 'AM' not in store_hours:
+            continue
         output_list.append(validate(output))
     return output_list
     

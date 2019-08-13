@@ -44,9 +44,9 @@ def fetch_data():
         details = detailresponse.xpath('//div[contains(@class, "cleft-subleft")]//text()')
         details = ''.join(details).split('Hours:').pop().strip().replace('\r\n', '')
         store_hours = details.encode("utf-8").replace('\xe2\x80\x93', '').replace('\xc2\xa0', '').split('Insurance:')[0]
-        if 'p.m' not in store_hours:
-            store_hours = "<MISSING>"
-        if not store_hours.endswith('p.m.'):
+        if 'p.m' not in store_hours and 'pm' not in store_hours:
+            store_hours = "available 24 hours a day, seven days a week"
+        if not store_hours.endswith('p.m.') and not store_hours.endswith('pm'):
             store_hours = store_hours.split('Get general information')[0].split("Saturday morning injury clinics")[0].split('This clinic ')[0]
         zipcode = store.xpath('./@postal')[0]
         if zipcode == None or zipcode == "":
