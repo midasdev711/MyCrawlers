@@ -43,7 +43,7 @@ def fetch_data():
     response = etree.HTML(request.text)
     store_list = response.xpath('//div[@id="container-bottom"]//div[contains(@class, "views-row")]')
     for store in store_list:
-        title = validate(store.xpath('.//div[@class="location-name"]/text()')[0])
+        title = validate(store.xpath('.//div[@class="location-name"]/text()'))
         province = store.xpath('.//div[@class="location-city-province"]/text()')[0]
         city = province.split(',')[0]
         state = province.split(',')[1]
@@ -55,14 +55,14 @@ def fetch_data():
         output = []
         output.append(base_url) # url
         output.append(title) #location name
-        output.append(validate(store.xpath('.//div[@class="location-street"]/text()')[0])) #address
+        output.append(validate(store.xpath('.//div[@class="location-street"]/text()'))) #address
         output.append(get_value(city)) #city
         output.append(get_value(state)) #state
         output.append(get_value(zipcode)) #zipcode
         output.append('CA') #country code
         output.append("<MISSING>") #store_number
         output.append(phone) #phone
-        output.append("Restaurant") #location type
+        output.append("WhiteSpot-Restaurant") #location type
         output.append("<MISSING>") #latitude
         output.append("<MISSING>") #longitude
         output.append(store_hours) #opening hours        

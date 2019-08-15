@@ -46,17 +46,17 @@ def fetch_data():
         store_hours = get_value(etree.HTML(hours).xpath('.//text()'))
         output = []
         output.append(base_url) # url
-        output.append(get_value(store.get('store'))) #location name
-        output.append(get_value(store.get('address'))) #address
-        output.append(get_value(store.get('city'))) #city
-        output.append(get_value(store.get('state'))) #state
-        output.append(get_value(store.get('zip'))) #zipcode
+        output.append(get_value(store['store'])) #location name
+        output.append(get_value(store['address'])) #address
+        output.append(get_value(store['city'])) #city
+        output.append(get_value(store['state'])) #state
+        output.append(get_value(store['zip'])) #zipcode
         output.append('US') #country code
-        output.append(store.get('id')) #store_number
-        output.append(get_value(store.get('phone'))) #phone
+        output.append(store['id']) #store_number
+        output.append(get_value(store['phone'])) #phone
         output.append("Your Pie") #location type
-        output.append(store.get('lat')) #latitude
-        output.append(store.get('lng')) #longitude
+        output.append(store['lat']) #latitude
+        output.append(store['lng']) #longitude
         output.append(store_hours) #opening hours        
         output_list.append(output)
     return output_list

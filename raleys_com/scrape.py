@@ -55,10 +55,8 @@ def fetch_data():
     }
     request = requests.get(url, headers=headers)
     response = etree.HTML(request.text)
-    # pdb.set_trace()
     store_list = response.xpath('//ol[@class="stores-list"]/li')
     for store in store_list:
-        title = validate(store.xpath('.//h2/text()')[0])
         address = store.xpath('.//address/text()')[0]
         address = usaddress.parse(address)
         street = ''
@@ -81,7 +79,7 @@ def fetch_data():
 
         output = []
         output.append(base_url) # url
-        output.append(title) #location name
+        output.append(validate(store.xpath('.//h2/text()'))) #location name
         output.append(get_value(street)) #address
         output.append(get_value(city)) #city
         output.append(get_value(state)[:2]) #state
