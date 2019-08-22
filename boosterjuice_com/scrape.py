@@ -40,6 +40,7 @@ def fetch_data():
         if len(hours) > 0:
             for x in hours:
                 if x.get('isClosed') == True:
+                    store_hours += (x.get('day') or u' ') + u' isClosed '
                     continue
                 store_hours += (x.get('day') or u' ') + u' ' + (x.get('open') or u' ') + u' ' + (x.get('close') or u' ') + u','
         if store.get('postalCode').encode('utf-8')[:1] >= 'A' and store.get('postalCode').encode('utf-8')[:1] <= 'Z':

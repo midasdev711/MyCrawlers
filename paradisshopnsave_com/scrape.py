@@ -49,28 +49,40 @@ def fetch_data():
         detail = etree.HTML(detailrequest.text.encode("utf-8"))
         hour_table = detail.xpath('//table')
         store_hours = ""
-        for table in hour_table:
-            store_hours += validate(table.xpath('.//tr')[0].xpath(".//text()")) + ':'
-            label_list = table.xpath(".//tr")[1].xpath('.//td//text()')
-            new_label_list = []
-            for x in xrange(0, len(label_list) / 2):
-                new_label_list.append(label_list[x * 2] + ' ' + label_list[(x * 2) + 1])
-            hour_list = table.xpath(".//tr")[2].xpath('.//td//text()')
-            for idx, item in enumerate(new_label_list):
-                store_hours += validate(item + ' ' + hour_list[idx]) + ' '
 
-        if len(location_address) == 6:
-            address = validate(location_address[1])
-            city = validate(location_address[2].split(',')[0])
-            state = validate(location_address[2].split(',')[1].split(' ')[1])
-            zipcode = validate(location_address[2].split(',')[1].split(' ')[2])
-            phone = location_address[3]
-        else:
-            address = validate(location_address[0])
-            city = validate(location_address[1].split(',')[0])
-            state = validate(location_address[1].split(',')[1].split(' ')[1])
-            zipcode = validate(location_address[1].split(',')[1].split(' ')[2])
-            phone = location_address[2]
+        # store_hours in the first table
+        store_hours += validate(hour_table[0].xpath('.//tr')[0].xpath(".//text()")) + ':'
+        label_list = hour_table[0].xpath(".//tr")[1].xpath('.//td//text()')
+        new_label_list = []
+        for x in xrange(0, len(label_list) / 2):
+            new_label_list.append(label_list[x * 2] + ' ' + label_list[(x * 2) + 1])
+
+        hour_list = hour_table[0].xpath(".//tr")[2].xpath('.//td//text()')
+        for idx, item in enumerate(new_label_list):
+            store_hours += validate(item + ':' + hour_list[idx]) + ' '
+
+        # store_hours in the second table
+
+        store_hours += validate(hour_table[1].xpath('.//tr')[0].xpath(".//text()")) + ':'
+        labels = hour_table[1].xpath(".//tr")[1].xpath('.//td')
+        label_list = []
+        for x in labels:
+            label_list.append(get_value(x.xpath(".//text()")))
+        hour_list = hour_table[1].xpath(".//tr")[2].xpath('.//td')
+        hours = []
+        for x in hour_list:
+            hours.append(get_value(x.xpath('.//text()')))
+        for idx, item in enumerate(label_list):
+            store_hours += validate(item + ':' + hours[idx].replace('\n', '')) + ' '
+
+        location_address = eliminate_space(location_address)
+        province = location_address[1].split(',')
+        
+        address = validate(location_address[0])
+        city = validate(province[0])
+        state = validate(province[1].split(' ')[1])
+        zipcode = validate(province[1].split(' ')[2])
+        phone = location_address[2]
 
         output = []
         output.append(base_url) # url
