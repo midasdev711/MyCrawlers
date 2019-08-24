@@ -42,6 +42,8 @@ def fetch_data():
     request = session.get(url)
     store_list = json.loads(request.text)
     for store in store_list:
+        if 'Coming Soon' in get_value(store['store']):
+            continue
         hours = store.get('hours')
         store_hours = get_value(etree.HTML(hours).xpath('.//text()'))
         output = []
