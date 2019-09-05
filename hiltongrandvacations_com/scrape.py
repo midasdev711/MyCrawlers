@@ -51,6 +51,8 @@ def fetch_data():
         city = validate(store.xpath("./@data-city"))
         loc_info = validate(store.xpath(".//p[@class='location']//text()")).split(', ')
         country = loc_info.pop()
+        if country != "USA":
+            continue
         state = loc_info.pop()
 
         detail_url = validate(store.xpath(".//p[@class='more']/a/@href"))

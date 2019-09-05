@@ -56,26 +56,31 @@ def fetch_data():
         phone = get_value(eliminate_space(detail.xpath('.//span[contains(@class, "page-caption-phone-mobile")]//text()')))
         title = 'HCOA Fitness ' + get_value(detail.xpath('.//h1[@class="infinite-page-title"]//text()'))
         hours = validate(eliminate_space(detail.xpath('.//text()'))).split('Horarios')[1].split('Itinerario de Clases')[0]
-        store_data[title] = {"phone": phone, "hours": hours}
+        address = validate(eliminate_space(store_html.xpath('.//div[@class="gdlr-core-feature-box-item-content"]/p//text()'))[:2])
+        store_data[title] = {"phone": phone, "hours": hours, "address": address}
 
     for store in store_list:   
         title = validate(store['title'])
+        if not store_data.get(title):
+            index = 'HCOA Fitness Rexville'
+        else:
+            index = title
+        address = store_data[index]["address"]
         output = []
         output.append(base_url) # url
-        output.append(title) #location name
-        output.append(validate(store['address'].split(', ')[:-2])) #address
+        output.append(title.replace('HCOA Fitness ', '')) #location name
+        output.append(address) #address
         output.append(validate(store['location']['city'])) #city
         output.append(validate(store['location']['state'])) #state
         output.append(validate(store['location']['postal_code'])) #zipcode
         output.append(validate(store['location']['country'])) #country code
         output.append(validate(store['id'])) #store_number
-        if not store_data.get(title):
-            title = 'HCOA Fitness Rexville'
-        output.append(store_data[title]['phone']) #phone
+        
+        output.append(store_data[index]['phone']) #phone
         output.append("HCOA Fitness") #location type
         output.append(validate(store['location']['lat'])) #latitude
         output.append(validate(store['location']['lng'])) #longitude
-        output.append(store_data[title]['hours']) #opening hours
+        output.append(store_data[index]['hours']) #opening hours
         output_list.append(output)
 
     return output_list

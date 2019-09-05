@@ -73,7 +73,11 @@ def fetch_data():
                 store_hours += ': ' + hour['openingTime']['formattedHour'] + '-' + hour['closingTime']['formattedHour'] + ' '
         formattedAddress = store['address']['formattedAddress']
 
-        title = 'Globo at ' + validate(store['address']['line1'])
+        if store['address'].get('mallName'):
+            title = 'Globo at ' + validate(store['address']['mallName'])
+        else:
+            title = 'Globo at ' + validate(store['address']['line1'])
+
         output = []
         output.append(base_url) # url
         output.append(title) #location name

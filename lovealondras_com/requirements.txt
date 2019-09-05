@@ -1,0 +1,5 @@
+lxml==4.3.4
+requests==2.11.1
+beautifulsoup4==4.7.1
+selenium==3.141.0
+usaddress==0.5.10

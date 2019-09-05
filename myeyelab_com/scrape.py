@@ -37,22 +37,12 @@ def fetch_data():
     output_list = []
     url = "https://www.myeyelab.com/wp-admin/admin-ajax.php"
     headers={
-        "accept": "application/json, text/javascript, */*; q=0.01",
-        "accept-encoding": "gzip, deflate, br",
-        "accept-language": "en-US,en;q=0.9",
-        "content-length": "76",
         "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-        "cookie": "gclid=undefined; _gcl_au=1.1.1714849535.1565178085; PHPSESSID=d79926914aa9b70057222f442a5d25ae; _ga=GA1.2.1708386539.1565178087; _gid=GA1.2.1227588014.1565178087; _gat_UA-38131623-1=1; _fbp=fb.1.1565178090134.1982884566; _hjid=36bbe2f5-8623-44cf-a5e6-bc30772308de; _hjIncludedInSample=1; __zlcmid=tfiRaC8OCsLC33",
-        "origin": "https://www.myeyelab.com",
-        "referer": "https://www.myeyelab.com/locations/",
-        "sec-fetch-mode": "cors",
-        "sec-fetch-site": "same-origin",
-        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.87 Safari/537.36",
-        "x-requested-with": "XMLHttpRequest"
+        "cookie": "PHPSESSID=9498d8c3f310d131eb6f18b4f375428f; gclid=undefined; _gcl_au=1.1.270807480.1567276928; _ga=GA1.2.1245547417.1567276928; _gid=GA1.2.732769914.1567276928; _hjid=627595e1-43fa-472e-b8ea-8810f6c343a6; _hjIncludedInSample=1; _fbp=fb.1.1567276929766.1440445499; __zlcmid=u3iVHICLo1D5sL; _gat_UA-38131623-1=1",
         }
     form_data = {
         "action": "somel_geo_store_list",
-        "nonce": "89823bf4f9"
+        "nonce": "4da222d7a9"
     }
     request = requests.post(url, headers=headers, data=form_data)
     store_list = json.loads(request.text)['data']['stores']

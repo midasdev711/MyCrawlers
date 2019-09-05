@@ -57,7 +57,8 @@ def fetch_data():
 
     for key, store in store_list.items():
         if store:
-            hours = store['_ServiceHours']
+            hours = store['_SalesHours']
+            store_hours = ""
             for hour in hours:
                 if hour['isClosed']:
                     store_hours += hour["dayOfWeek"] + ": Closed "

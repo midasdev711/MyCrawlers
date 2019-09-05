@@ -40,6 +40,10 @@ def write_output(data):
         for row in data:
             writer.writerow(row)
 
+def replace_last(source_string, replace_what, replace_with):
+    head, _sep, tail = source_string.rpartition(replace_what)
+    return head + replace_with + tail
+
 def fetch_data():
     output_list = []
     url = "https://blomedry.com/locations/"
@@ -55,6 +59,14 @@ def fetch_data():
         title = validate(tmp[0])
         geoinfo[title] = {"lat": lat, "lng": lng}
 
+    state_titles_tmp = eliminate_space(response.xpath('//h2[contains(@class, "state-title")]//text()'))
+    state_titles = []
+    for state_title in state_titles_tmp:
+        tmp = validate(state_title.title())
+        if tmp == "Dc":
+            tmp = "DC"
+        state_titles.append(tmp)
+
     for store in store_list:
         highlight = store.xpath(".//p[@class='location-highlight']//text()")
         if len(highlight) > 0 and validate(highlight) == "coming soon!":
@@ -66,16 +78,31 @@ def fetch_data():
         title = get_value(store.xpath(".//h3[contains(@class, 'entry-title')]//text()"))
 
         address = store.xpath(".//p[@class='location-address']//text()")
-        hours = get_value(highlight or detail.xpath(".//p[contains(@class, 'location-hours')]//text()")).replace('\n', '')
+        hours = get_value(detail.xpath(".//p[contains(@class, 'location-hours')]//text()") or highlight).replace('\n', '')
+
+        if get_value(address[2]) == "<MISSING>":
+            continue
+        if len(get_value(address[2]).split(' ')) > 1:
+            country = 'CA'
+        else:
+            country = 'US'
+        city_state = validate(address[1]);
+        state = ""
+        city = ""
+
+        for state_title in state_titles:
+            if state_title in city_state:
+                state = state_title
+                city = replace_last(city_state, state, '')
 
         output = []
         output.append(base_url) # url
         output.append(title) #location name
         output.append(get_value(address[0])) #address
-        output.append(get_value(address[1]).split(' ')[0]) #city
-        output.append(get_value(address[1]).split(' ')[1]) #state
+        output.append(get_value(city)) #city
+        output.append(get_value(state)) #state
         output.append(get_value(address[2])) #zipcode
-        output.append('CA') #country code
+        output.append(country) #country code
         output.append("<MISSING>") #store_number
         output.append(get_value(store.xpath(".//span[contains(@class, 'phone')]//text()"))) #phone
         output.append("The Original Blow Dry Bar | Blo Blow Dry Bar") #location type
