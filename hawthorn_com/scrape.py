@@ -93,21 +93,7 @@ def fetch_data():
         latitude = validate(detail['latitude'])
         longitude = validate(detail['longitude'])
         country_code = validate(detail['countryCode'])
-        checkin = int(validate(detail['checkInTime']))
-        checkout = int(validate(detail['checkOutTime']))
-        if checkin > 1200:
-            checkin_str = ' p.m - '
-            checkin -= 1200
-        else:
-            checkin_str = ' a.m - '
-        if checkout > 1200:
-            checkout_str = ' p.m'
-            checkout -= 1200
-        else:
-            checkout_str = ' a.m'
-        checkin = str(checkin)[:-2] + ':' + str(checkin)[-2:] + checkin_str
-        checkout = str(checkout)[:-2] + ':' + str(checkout)[-2:] + checkout_str
-        hours = checkin + checkout
+        hours = "24 hours open"
 
         output = []
         output.append(base_url) # url
