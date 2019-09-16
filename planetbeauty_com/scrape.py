@@ -5,7 +5,7 @@ import requests
 from lxml import etree
 import json
 
-base_url = 'https://www.planetbeauty.com'
+base_url = 'https://www.planetbeauty.com/'
 
 def validate(item):    
     if type(item) == list:
@@ -41,13 +41,16 @@ def fetch_data():
     request = requests.post(url)
     store_list = json.loads(request.text)['storesjson']
     for store in store_list:
-
+        detail_url = base_url + validate(store["rewrite_request_path"])
+        detail = etree.HTML(requests.get(detail_url).text)
+        hours = get_value(eliminate_space(detail.xpath('.//div[@class="open_hour"]//text()')))
+        city_state = validate(eliminate_space(detail.xpath('.//span[@class="group-info"]//text()'))[1])
         output = []
         output.append(base_url) # url
         output.append(validate(store['store_name'])) #location name
         output.append(validate(store['address'])) #address
-        output.append("<MISSING>") #city
-        output.append("<MISSING>") #state
+        output.append(city_state.split(',')[0]) #city
+        output.append(city_state.split(',')[1]) #state
         output.append("<MISSING>") #zipcode
         output.append("US") #country code
         output.append(validate(store["storelocator_id"])) #store_number
@@ -55,7 +58,7 @@ def fetch_data():
         output.append("Planet Beauty Stores") #location type
         output.append(validate(store['latitude'])) #latitude
         output.append(validate(store['longitude'])) #longitude
-        output.append("<MISSING>") #opening hours
+        output.append(hours) #opening hours
 
         output_list.append(output)
 
