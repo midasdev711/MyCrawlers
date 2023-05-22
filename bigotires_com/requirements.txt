@@ -1,5 +1,5 @@
 lxml==4.6.5
-requests==2.20.0
+requests==2.31.0
 beautifulsoup4==4.7.1
 selenium==3.141.0
 usaddress==0.5.10
